@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_height="wrap_content"
+	android:layout_width="match_parent"
+	android:orientation="horizontal">
+
+	<LinearLayout
+		android:layout_height="wrap_content"
+		android:layout_width="wrap_content"
+		android:orientation="vertical">
+
+		<include
+			layout="@layout/rv_item"
+			android:layout_width="150dp"
+			android:layout_height="100dp"/>
+
+		<EditText
+			android:id="@+id/et"
+			android:inputType="textMultiLine"
+			android:layout_width="match_parent"
+			android:ems="10"
+			android:layout_height="wrap_content"/>
+
+	</LinearLayout>
+
+	<LinearLayout
+		android:layout_height="match_parent"
+		android:layout_width="wrap_content"
+		android:orientation="vertical"
+		android:layout_alignParentRight="true"
+		android:gravity="right"
+		android:layout_weight="1.0">
+
+		<Button
+			style="?android:attr/buttonBarButtonStyle"
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:text="ChangeColors"
+			android:id="@+id/bt_cc"
+			android:layout_weight="1.0"/>
+
+		<Button
+			style="?android:attr/buttonBarButtonStyle"
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:text="detail"
+			android:id="@+id/bt_detail"
+			android:layout_alignParentRight="true"
+			android:layout_below="@id/bt_cc"
+			android:layout_weight="1.0"/>
+		
+
+		<Button
+			style="?android:attr/buttonBarButtonStyle"
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:text="delete"
+			android:id="@+id/bt_de"
+			android:layout_alignParentRight="true"
+			android:layout_below="@id/bt_cc"
+			android:layout_weight="1.0"/>
+
+	</LinearLayout>
+
+</LinearLayout>
+
