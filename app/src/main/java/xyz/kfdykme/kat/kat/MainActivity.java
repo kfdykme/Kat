@@ -33,7 +33,7 @@ implements NavigationView.OnNavigationItemSelectedListener
 	TaskListContract.Presenter mTaskListPresenter;	
 	TaskListContract.View mTaskListView;
 
-	
+	int currentPos =0;
 	private ViewGroup view;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +68,7 @@ implements NavigationView.OnNavigationItemSelectedListener
 
 									 
 		view = (ViewGroup) findViewById(R.id.content_main);
-		selectView(0);
+		selectView(currentPos);
     }
 
 	
@@ -132,6 +132,7 @@ implements NavigationView.OnNavigationItemSelectedListener
     }
 	
 	private void selectView(int pos){
+		currentPos = pos;
 		view.removeAllViews();
 		switch(pos){
 			case 0:
@@ -145,5 +146,20 @@ implements NavigationView.OnNavigationItemSelectedListener
 				break;
 		}
 	}
+
+	@Override
+	protected void onResume()
+	{
+		
+		selectView(currentPos);
+		super.onResume();
+	}
+	
+	
+
+
+	
+	
+	
 	
 }

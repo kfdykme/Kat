@@ -6,6 +6,7 @@ public interface EditContract
 {
 	interface View extends BaseView<EditContract.Presenter>{
 		void onLoad(Task map);
+		void attach();
 		void show();
 	}
 	
@@ -13,5 +14,7 @@ public interface EditContract
 		void onLoad(Task map);
 		void onSave(Task map);
 		void onCancel();
+		void onDetail(Task t);
+		void showDialog();
 	}
 }

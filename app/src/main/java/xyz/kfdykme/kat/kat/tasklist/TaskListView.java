@@ -9,6 +9,8 @@ import java.util.*;
 import xyz.kfdykme.kat.kat.*;
 import xyz.kfdykme.kat.kat.taskedit.*;
 import xyz.kfdykme.kat.kat.utils.*;
+import android.os.*;
+import xyz.kfdykme.kat.kat.taskdetail.*;
 
 public class TaskListView implements TaskListContract.View
 {
@@ -62,7 +64,7 @@ public class TaskListView implements TaskListContract.View
 			private EditView mEditView;
 
 			@Override
-			public void Click(Task task, int pos)
+			public void click(Task task, int pos)
 			{
 
 				presenter.onEditTask(task);
@@ -70,6 +72,7 @@ public class TaskListView implements TaskListContract.View
 
 
 		};
+		 
 		mRecyclerView.setAdapter(adapter);
 	}
 

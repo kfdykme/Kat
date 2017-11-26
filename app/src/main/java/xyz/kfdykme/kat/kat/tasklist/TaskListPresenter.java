@@ -1,5 +1,9 @@
 package xyz.kfdykme.kat.kat.tasklist;
+import android.content.*;
+import android.os.*;
+import com.google.gson.*;
 import xyz.kfdykme.kat.kat.*;
+import xyz.kfdykme.kat.kat.taskdetail.*;
 import xyz.kfdykme.kat.kat.taskedit.*;
 
 public class TaskListPresenter implements TaskListContract.Presenter
@@ -32,8 +36,10 @@ public class TaskListPresenter implements TaskListContract.Presenter
 		mEditView = new EditView(view.getContext());
 		mEditPresenter = new EditPresenter(mEditView);
 		mEditPresenter.setTasklistPresenter(this);
-		mEditPresenter.onLoad(t);
 		mEditPresenter.start();
+		mEditPresenter.onLoad(t);
+		mEditPresenter.showDialog();
+		
 	}
 
 	@Override
@@ -42,9 +48,9 @@ public class TaskListPresenter implements TaskListContract.Presenter
 
 		mEditView = new EditView(view.getContext());
 		mEditPresenter = new EditPresenter(mEditView);
-		mEditPresenter.setTasklistPresenter(this);
-		 
+		mEditPresenter.setTasklistPresenter(this);	 
 		mEditPresenter.start();
+		mEditPresenter.showDialog();
 	}
 
 	@Override
@@ -59,6 +65,7 @@ public class TaskListPresenter implements TaskListContract.Presenter
 		view.onReflash();
 	}
 
+	
 	
 	
 

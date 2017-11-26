@@ -20,10 +20,17 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHo
 	public List<Task> tasks = new ArrayList();
 	public interface OnItemClickListener
 	{
-		public void Click(Task task,int pos);
+		public void click(Task task,int pos);
 	}
 	
+	public interface OnItemLongClickListener
+	{
+		public boolean longClick(Task task,View view,boolean bool);
+	}
+	
+	
 	public OnItemClickListener mOnItemClickListenee;
+	public OnItemLongClickListener mOnItemLongClickListener;
 	public TaskListAdapter(Context context, List<Task> lists)
 	{
 		this.context = context;
@@ -37,7 +44,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHo
 	@Override
 	public TaskListAdapter.ViewHolder onCreateViewHolder(ViewGroup p1, int p2)
 	{
-		
+		Log.i("TaskListAdapter","create " + p2);
 		View v = inflayer.inflate(R.layout.rv_item,p1,false);
 		TaskListAdapter.ViewHolder vh =  new TaskListAdapter.ViewHolder(v);
 		
@@ -64,7 +71,18 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHo
 				@Override
 				public void onClick(View v)
 				{
-					if(mOnItemClickListenee != null) mOnItemClickListenee.Click(tasks.get(p2),p2);
+					if(mOnItemClickListenee != null) mOnItemClickListenee.click(tasks.get(p2),p2);
+				}
+			});
+		p1.tv.setOnLongClickListener(new OnLongClickListener(){
+
+				@Override
+				public boolean onLongClick(View p1)
+				{
+					if(mOnItemLongClickListener !=null)
+						mOnItemLongClickListener.longClick(tasks.get(p2),p1,false);
+					// TODO: Implement this method
+					return false;
 				}
 			});
 		

@@ -27,6 +27,7 @@ public class EditView implements EditContract.View
 	public CardView cv;
 	public TextView tv;
 	public Button btCc;
+	public Button btDetail;
 	public int bgc;
 	public int tc;
 	public EditText et;
@@ -37,11 +38,27 @@ public class EditView implements EditContract.View
 	public EditView(Context context){
 		this.context=context;
 		view = LayoutInflater.from(context).inflate(R.layout.view_task_edit,null);
+		 
+	}
+	
+	public void initView(View view){
 		cv = (CardView) view.findViewById(R.id.cv);
 		tv = (TextView) view.findViewById(R.id.tv);
 		et = (EditText) view.findViewById(R.id.et);
 		btCc = (Button) view.findViewById(R.id.bt_cc);
+		btDetail = (Button) view.findViewById(R.id.bt_detail);
 		
+		btDetail.setOnClickListener(new OnClickListener(){
+
+				@Override
+				public void onClick(View p1)
+				{
+					dialog.dismiss();
+					
+					mPresenter.onDetail(task);
+				}
+			});
+
 		btCc.setOnClickListener(new OnClickListener(){
 
 				@Override
@@ -98,12 +115,13 @@ public class EditView implements EditContract.View
 				@Override
 				public void onDismiss(DialogInterface p1)
 				{
-					
+
 					mPresenter = null;
 				}
 			})
 			.create();
 	}
+	
 	private int getrand(){
 		return MathUtil.rand(100,250);
 	}
@@ -147,6 +165,15 @@ public class EditView implements EditContract.View
 		task.bgc = bgc;
 		task.tc = tc;
 	}
+
+	@Override
+	public void attach()
+	{
+		initView(view);
+	}
+
+	
+	
 
 	@Override
 	public View getView()

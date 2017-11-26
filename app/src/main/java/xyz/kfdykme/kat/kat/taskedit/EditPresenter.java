@@ -1,12 +1,12 @@
 package xyz.kfdykme.kat.kat.taskedit;
-import java.util.*;
-import java.util.logging.*;
-import xyz.kfdykme.kat.kat.utils.*;
-import java.io.*;
+import android.content.*;
+import android.os.*;
 import com.google.gson.*;
-import android.widget.*;
+import java.io.*;
 import xyz.kfdykme.kat.kat.*;
+import xyz.kfdykme.kat.kat.taskdetail.*;
 import xyz.kfdykme.kat.kat.tasklist.*;
+import xyz.kfdykme.kat.kat.utils.*;
 
 public class EditPresenter implements EditContract.Presenter
 {
@@ -67,6 +67,20 @@ public class EditPresenter implements EditContract.Presenter
 	public void start()
 	{
 
+		view.attach(); 
+	}
+	
+	public void onDetail(Task task){
+		String json = new Gson().toJson(task);
+		Bundle b = new Bundle();
+		b.putString(TaskDetailActivity.TASK,json);
+		Intent i = new Intent(view.getContext(),TaskDetailActivity.class);
+		i.putExtras(b);
+		view.getContext().startActivity(i);
+
+	}
+	@Override
+	public void showDialog(){
 		view.show();
 	}
 }
