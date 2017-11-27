@@ -35,7 +35,7 @@ public class TaskListView implements TaskListContract.View
 		
 		mRecyclerView = (RecyclerView) root.findViewById(R.id.rv);
 		mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-		mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(5,StaggeredGridLayoutManager.HORIZONTAL));
+		mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(7,StaggeredGridLayoutManager.HORIZONTAL));
 	}
 	
 	@Override
@@ -56,7 +56,7 @@ public class TaskListView implements TaskListContract.View
 			e.printStackTrace();
 		}
 //
-		Collections.shuffle(list);
+		//Collections.shuffle(li
 		adapter =  new TaskListAdapter(context,list);
 		
 		adapter.mOnItemClickListenee = new TaskListAdapter.OnItemClickListener(){
@@ -76,6 +76,8 @@ public class TaskListView implements TaskListContract.View
 					Intent resolveIntent = getContext().getPackageManager().getLaunchIntentForPackage(task.id);// 这里的packname就是从上面得到的目标apk的包名
 // 启动目标应用
 					context.startActivity(resolveIntent);
+					task.weight++;
+					FileUtils.createFile("apps",task.id + ".kta",new Gson().toJson(task));
 					} catch(Exception e){
 						Toast.makeText(getContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
 						

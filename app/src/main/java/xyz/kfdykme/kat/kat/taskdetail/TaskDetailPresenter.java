@@ -25,7 +25,7 @@ public class TaskDetailPresenter implements TaskDetailContract.Presenter
 	@Override
 	public void onSave()
 	{
-		
+		load(task);
 	}
 
 	@Override

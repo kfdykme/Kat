@@ -17,8 +17,28 @@ public class TaskUtils
 		for(String content:FileUtils.readFiles("apps")){
 			ts.add(new Gson().fromJson(content,Task.class));
 		}
-		return ts;
+		return sortByWeight(ts);
 	} 
+	
+	public static List<Task> sortByWeight(List<Task> ts){
+		List<Task> nTs = new ArrayList<>();
+		while(ts.size() !=0){
+			int lep =0;
+			for(int i = 0 ;i< ts.size()-1;i++){
+				if(ts.get(lep).weight > ts.get(i).weight){
+					lep = i;
+				}
+			}
+			if(ts.size() == 1)
+				nTs.add(nTs.size(),ts.get(lep));
+			else
+				nTs.add(0,ts.get(lep));
+		
+	
+			ts.remove(lep);
+		}
+		return nTs;
+	}
 	
 	public static void outputTaskDetails(){
 		List<Map> list = new ArrayList();

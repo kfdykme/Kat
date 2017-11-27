@@ -11,7 +11,8 @@
 		android:layout_height="wrap_content"
 		android:textAppearance="?android:attr/textAppearanceLarge"
 		android:text="Large Text"
-		android:paddingLeft="8dp"/>
+		android:paddingLeft="8dp"
+		android:gravity="right"/>
 
 </LinearLayout>
 

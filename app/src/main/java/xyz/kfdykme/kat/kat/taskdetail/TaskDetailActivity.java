@@ -47,7 +47,10 @@ public class TaskDetailActivity extends AppCompatActivity implements TaskDetailC
 	{
 		rv= (RecyclerView) findViewById(R.id.rv);
 		rv.setItemAnimator(new DefaultItemAnimator());
-		rv.setLayoutManager(new LinearLayoutManager(this));
+		LinearLayoutManager lm = new LinearLayoutManager(this);
+		lm.setReverseLayout(true);
+		
+		rv.setLayoutManager(lm);
 		TaskDetailAdapter adapter = new TaskDetailAdapter(this,ts);
 		rv.setAdapter(adapter);
 		adapter.mOnAddListener = new TaskDetailAdapter.OnAddListener(){
@@ -105,7 +108,8 @@ public class TaskDetailActivity extends AppCompatActivity implements TaskDetailC
 				@Override
 				public void onClick(DialogInterface p1, int p2)
 				{
-								EditText etContent = (EditText) av.findViewById(R.id.et_content);
+					
+					EditText etContent = (EditText) av.findViewById(R.id.et_content);
 					String title = etTitle.getText().toString();
 					String content = etContent.getText().toString();
 					if(!title.isEmpty() && !content.isEmpty()){
@@ -117,7 +121,9 @@ public class TaskDetailActivity extends AppCompatActivity implements TaskDetailC
 						td.itemType = 2;
 						td.save();
 						Toast.makeText(getContext(),"Save as " + title,Toast.LENGTH_LONG).show();
-						presenter.load(mTask);				
+						presenter.onSave();
+						mEditPresenter.onSave(mTask);
+						//presenter.load(mTask);				
 					}
 				}
 			})

@@ -11,6 +11,8 @@ public class Task
 	public int taskType = 0;
 	
 	public String className ="";
+	
+	public int weight = 0;
 	public static final int ACTIVE = 1;
 
 	public static final int SLEEP = 2;

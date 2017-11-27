@@ -34,6 +34,7 @@ public class EditPresenter implements EditContract.Presenter
 		try
 		{
 			if(map!=null){
+				map.weight++;
 				FileUtils.createFile("task", map.id + ".kta", new Gson().toJson(map));
 			}
 			if(tasklistPresenter!=null)
