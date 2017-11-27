@@ -59,11 +59,15 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHo
 
 		p1.bgc = tasks.get(p2).bgc;
 		p1.tc = tasks.get(p2).tc;
+		if(tasks.get(p2).taskType == Task.TYPE_APP){
+			p1.bgc = context.getResources().getColor(R.color.colorPrimary);
+			p1.tc = context.getResources().getColor(R.color.colorAccent);
+		}
 		p1.tv.setText(tasks.get(p2).text);
 	
 		p1.cv.setBackgroundColor(p1.bgc);
 		p1.tv.setTextColor(p1.tc);
-		int tempWidth = 200 +(p2%3)*50;
+		int tempWidth = 300 +(p2%3)*70;
 		if(tempWidth > p1.tv.getWidth());
 			p1.tv.setWidth(tempWidth);
 		p1.tv.setOnClickListener(new OnClickListener(){

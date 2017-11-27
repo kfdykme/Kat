@@ -25,13 +25,13 @@ public class TaskDetailPresenter implements TaskDetailContract.Presenter
 	@Override
 	public void onSave()
 	{
-		// TODO: Implement this method
+		
 	}
 
 	@Override
 	public void onCancel()
 	{
-		// TODO: Implement this method
+		
 	}
 
 	@Override
@@ -40,8 +40,13 @@ public class TaskDetailPresenter implements TaskDetailContract.Presenter
 		List<TaskDetail> all = TaskDetail.listAll(TaskDetail.class);
 		
 		List<TaskDetail> loadDetails = new ArrayList<>();
+		if(task !=null)
 		for(TaskDetail t:all){
+			Log.i("TaskDetail",t.toString());
 			if(t.taskId.equals(task.id))loadDetails.add(t);
+		}else {
+			view.onLoad(all);
+			return;
 		}
 		
 		view.onLoad(loadDetails);

@@ -14,13 +14,14 @@ public class EditViewWithoutDialog extends EditView implements EditContract.View
 { 
 	public Button btCancel;
 	public Button btSave;
- 
+ 	public View cv;
 
 	public EditViewWithoutDialog(Context context,View view){
 		super(context);
 		this.view = view;
 		btCancel = (Button) view.findViewById(R.id.bt_cancel);
 		btSave = (Button) view.findViewById(R.id.bt_save);
+		cv = view.findViewById(R.id.cv);
 		btCancel.setOnClickListener(new OnClickListener(){
 
 				@Override

@@ -60,7 +60,7 @@ public class TaskListPresenter implements TaskListContract.Presenter
 	}
 
 	@Override
-	public void onSaveTask(Task t)
+	public void onReflash(Task t)
 	{
 		view.onReflash();
 	}

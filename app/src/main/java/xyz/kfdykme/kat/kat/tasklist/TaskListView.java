@@ -11,6 +11,7 @@ import xyz.kfdykme.kat.kat.taskedit.*;
 import xyz.kfdykme.kat.kat.utils.*;
 import android.os.*;
 import xyz.kfdykme.kat.kat.taskdetail.*;
+import android.widget.*;
 
 public class TaskListView implements TaskListContract.View
 {
@@ -54,7 +55,8 @@ public class TaskListView implements TaskListContract.View
 		{
 			e.printStackTrace();
 		}
-
+//
+		Collections.shuffle(list);
 		adapter =  new TaskListAdapter(context,list);
 		
 		adapter.mOnItemClickListenee = new TaskListAdapter.OnItemClickListener(){
@@ -67,7 +69,27 @@ public class TaskListView implements TaskListContract.View
 			public void click(Task task, int pos)
 			{
 
+				if(task.taskType == task.TYPE_TASK)
 				presenter.onEditTask(task);
+				else {
+					try{
+					Intent resolveIntent = getContext().getPackageManager().getLaunchIntentForPackage(task.id);// 这里的packname就是从上面得到的目标apk的包名
+// 启动目标应用
+					context.startActivity(resolveIntent);
+					} catch(Exception e){
+						Toast.makeText(getContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
+						
+						
+						try
+						{
+							FileUtils.deleteFile("apps", task.id + ".kta");
+						}
+						catch (Throwable e2)
+						{}
+
+						
+					} 
+				}
 			}
 
 

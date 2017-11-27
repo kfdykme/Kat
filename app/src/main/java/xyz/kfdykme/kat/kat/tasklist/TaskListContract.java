@@ -13,7 +13,7 @@ public interface TaskListContract
 		void onEditTask(Task t);
 		void onAddTask(Task t);
 		void onDeleteTask(Task t);
-		void onSaveTask(Task t); 
+		void onReflash(Task t); 
 	
 	}
 }

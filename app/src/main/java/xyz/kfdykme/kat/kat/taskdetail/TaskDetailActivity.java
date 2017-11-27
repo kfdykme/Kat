@@ -78,12 +78,16 @@ public class TaskDetailActivity extends AppCompatActivity implements TaskDetailC
 			presenter = new TaskDetailPresenter(this,mTask);
 			 
 			presenter.start();
-
 			mEditView = new EditViewWithoutDialog(this,getView());
 			mEditPresenter = new EditPresenter(mEditView);
 			mEditView.setPresenter(mEditPresenter);
-			mEditPresenter.start();
-			mEditPresenter.onLoad(mTask);
+			
+			if(mTask!=null){
+				mEditPresenter.start();
+				mEditPresenter.onLoad(mTask);
+			}else{
+				mEditView.cv.setVisibility(View.GONE);	
+			}
 		}
 	}
 
@@ -95,7 +99,7 @@ public class TaskDetailActivity extends AppCompatActivity implements TaskDetailC
 		final EditText etTitle = (EditText) av.findViewById(R.id.et_title);
 		etTitle.setText(TimeUtils.fromat(System.currentTimeMillis()+""));
 		AlertDialog d = new AlertDialog.Builder(this)
-		.setView(av)
+			.setView(av)
 			.setPositiveButton("Save", new DialogInterface.OnClickListener(){
 
 				@Override
@@ -106,7 +110,7 @@ public class TaskDetailActivity extends AppCompatActivity implements TaskDetailC
 					String content = etContent.getText().toString();
 					if(!title.isEmpty() && !content.isEmpty()){
 						TaskDetail td = new TaskDetail();
-						td.id = System.currentTimeMillis()+"";
+						td.createTime = System.currentTimeMillis()+"";
 						td.taskId = taskId;
 						td.title = title;
 						td.item = content;

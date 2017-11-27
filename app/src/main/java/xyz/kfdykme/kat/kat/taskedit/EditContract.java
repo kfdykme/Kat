@@ -16,5 +16,6 @@ public interface EditContract
 		void onCancel();
 		void onDetail(Task t);
 		void showDialog();
+		void onDelete(Task t);
 	}
 }

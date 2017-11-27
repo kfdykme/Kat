@@ -28,6 +28,7 @@ public class EditView implements EditContract.View
 	public TextView tv;
 	public Button btCc;
 	public Button btDetail;
+	public Button btDelete;
 	public int bgc;
 	public int tc;
 	public EditText et;
@@ -47,7 +48,7 @@ public class EditView implements EditContract.View
 		et = (EditText) view.findViewById(R.id.et);
 		btCc = (Button) view.findViewById(R.id.bt_cc);
 		btDetail = (Button) view.findViewById(R.id.bt_detail);
-		
+		btDelete = (Button) view.findViewById(R.id.bt_delete);
 		btDetail.setOnClickListener(new OnClickListener(){
 
 				@Override
@@ -59,6 +60,17 @@ public class EditView implements EditContract.View
 				}
 			});
 
+		btDelete.setOnClickListener(new OnClickListener(){
+
+				@Override
+				public void onClick(View p1)
+				{
+					dialog.dismiss();
+					
+					mPresenter.onDelete(task);
+				}
+			});
+			
 		btCc.setOnClickListener(new OnClickListener(){
 
 				@Override

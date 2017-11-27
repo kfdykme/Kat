@@ -37,7 +37,7 @@ public class EditPresenter implements EditContract.Presenter
 				FileUtils.createFile("task", map.id + ".kta", new Gson().toJson(map));
 			}
 			if(tasklistPresenter!=null)
-				tasklistPresenter.onSaveTask(null);
+				tasklistPresenter.onReflash(null);
 		}
 		catch (IOException e)
 		{}
@@ -83,4 +83,20 @@ public class EditPresenter implements EditContract.Presenter
 	public void showDialog(){
 		view.show();
 	}
+
+	@Override
+	public void onDelete(Task t)
+	{
+		try
+		{
+			FileUtils.deleteFile("task", t.id + ".kta");
+			if(tasklistPresenter!=null)
+				tasklistPresenter.start();
+		}
+		catch (Throwable e)
+		{}
+	}
+
+	
+	
 }

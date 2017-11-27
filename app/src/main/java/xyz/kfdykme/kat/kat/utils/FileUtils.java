@@ -82,4 +82,25 @@ public class FileUtils
 		
 		return list;
 	}
+	
+	public static void deleteFile(String reDir,String name) throws IOException, Throwable{
+		File root = Environment.getExternalStorageDirectory();
+
+        File dir = new File(root.getCanonicalPath()+baseDir+reDir);
+        if(!dir.exists()){
+            throw FileNotFoundException;
+        }
+        File targetFile = new File(dir.getCanonicalPath()+"/"+name);
+
+        
+        if(targetFile.isFile() && targetFile.exists()){
+
+            targetFile.delete();
+
+        }else{
+
+			throw FileNotFoundException;
+        }
+        
+	}
 }

@@ -8,12 +8,18 @@ public class Task
 	public int bgc;
 	public String text;
 	public int status = 1; 
+	public int taskType = 0;
 	
+	public String className ="";
 	public static final int ACTIVE = 1;
 
 	public static final int SLEEP = 2;
 
 	public static final int COMLET = 3;	
+	
+	public static final int TYPE_TASK= 0;
+
+	public static final int TYPE_APP = 1;
 	
 	public Task(){}
 	
