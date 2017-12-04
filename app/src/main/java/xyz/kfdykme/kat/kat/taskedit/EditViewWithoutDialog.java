@@ -11,7 +11,9 @@ import android.widget.*;
 import xyz.kfdykme.kat.kat.*;
 
 public class EditViewWithoutDialog extends EditView implements EditContract.View
-{ 
+{
+
+	
 	public Button btCancel;
 	public Button btSave;
  	public View cv;
@@ -21,13 +23,13 @@ public class EditViewWithoutDialog extends EditView implements EditContract.View
 		this.view = view;
 		btCancel = (Button) view.findViewById(R.id.bt_cancel);
 		btSave = (Button) view.findViewById(R.id.bt_save);
-		cv = view.findViewById(R.id.cv);
+		cv = view.findViewById(R.id.cv_edit);
 		btCancel.setOnClickListener(new OnClickListener(){
 
 				@Override
 				public void onClick(View p1)
 				{
-					mPresenter.onCancel();
+					presenter.onCancel();
 					
 				}
 			});
@@ -36,7 +38,7 @@ public class EditViewWithoutDialog extends EditView implements EditContract.View
 				@Override
 				public void onClick(View p1)
 				{
-					mPresenter.onSave(task);
+					presenter.onSave(task);
 				}
 
 			});

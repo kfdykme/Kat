@@ -1,4 +1,5 @@
 package xyz.kfdykme.kat.kat;
+import java.util.*;
 
 public class Task
 {
@@ -7,21 +8,28 @@ public class Task
 	public int tc;
 	public int bgc;
 	public String text;
-	public int status = 1; 
-	public int taskType = 0;
+	public int status = 1;  
+	
+	public List<String> type = new ArrayList<String>();
 	
 	public String className ="";
 	
 	public int weight = 0;
+	
 	public static final int ACTIVE = 1;
 
 	public static final int SLEEP = 2;
 
 	public static final int COMLET = 3;	
+	 
 	
-	public static final int TYPE_TASK= 0;
-
-	public static final int TYPE_APP = 1;
+	public static final String TYPE_TASK = "task";
+	
+	public static final String TYPE_APP = "app";
+	
+	public static final String TYPE_DESKTOP = "desktop";
+	
+	
 	
 	public Task(){}
 	
@@ -33,5 +41,21 @@ public class Task
 		this.text = text;
 	}
 
+	public  boolean checkType(String key){
+		for(String s:type)
+			if(s.equals(key))
+				return true;
+		return false;
+	}
 	
+	public void addType(String key){
+		if(checkType(key))
+			return;
+		else type.add(key);
+	}
+	
+	public void removeType(String key){
+		if(checkType(key))
+			type.remove(key);
+	}
 }

@@ -3,7 +3,7 @@ import java.util.*;
 import xyz.kfdykme.kat.kat.*;
 
 
-public class TaskDetailContract
+public class TaskDetailListContract
 {
 	public interface View extends BaseView<Presenter>{
 		void onLoad(List<TaskDetail> ts);

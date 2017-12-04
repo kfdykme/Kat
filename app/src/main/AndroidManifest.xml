@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="xyz.kfdykme.kat.kat">
 
+	
+	<uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+	<uses-permission android:name="android.permission.SYSTEM_OVERLAY_WINDOW"/>
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 	<meta-data android:name="DATABASE" android:value="kat.db" />
     <meta-data android:name="VERSION" android:value="2" />

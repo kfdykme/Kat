@@ -12,90 +12,67 @@ import xyz.kfdykme.kat.kat.utils.*;
 import android.os.*;
 import xyz.kfdykme.kat.kat.taskdetail.*;
 import android.widget.*;
+import android.support.v7.widget.RecyclerView.*;
 
-public class TaskListView implements TaskListContract.View
+public class TaskListView extends BaseViewImpl<TaskListContract.Presenter> implements TaskListContract.View
 {
-
 	
-	View root;
 
 	private RecyclerView mRecyclerView;
 
-	private List<Task> list;
+	public List<Task> list;
 
 	private TaskListAdapter adapter;
 	
-	private Context context;
-	
-	private TaskListContract.Presenter presenter;
 
 	public TaskListView(final Context context){
 		this.context = context;
-		root = LayoutInflater.from(context).inflate(R.layout.view_task_list,null);
-		
-		mRecyclerView = (RecyclerView) root.findViewById(R.id.rv);
+		view = LayoutInflater.from(context).inflate(R.layout.view_task_list,null);
+		mRecyclerView = (RecyclerView) view.findViewById(R.id.rv);
 		mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-		mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(7,StaggeredGridLayoutManager.HORIZONTAL));
-	}
-	
-	@Override
-	public void setPresenter(TaskListContract.Presenter presenter)
-	{
-		this.presenter = presenter;
+		mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+		//mRecyclerView.setlay//new StaggeredGridLayoutManager(5,StaggeredGridLayoutManager.HORIZONTAL));
 	}
 
 	@Override
-	public void onLoad()
+	public void setLayout(RecyclerView.LayoutManager lm)
 	{
-		try
-		{
-			list  = TaskUtils.getTasks();
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-//
-		//Collections.shuffle(li
+		mRecyclerView.setLayoutManager(lm);// TODO: Implement this method
+	}
+
+	
+	
+	
+	@Override
+	public void onLoad(List<Task> l)
+	{
+		if(l == null) return;
+		list = l;
+		//
 		adapter =  new TaskListAdapter(context,list);
 		
 		adapter.mOnItemClickListenee = new TaskListAdapter.OnItemClickListener(){
 
-			private EditPresenter mEditPresenter;
-
-			private EditView mEditView;
-
+			
 			@Override
 			public void click(Task task, int pos)
 			{
-
-				if(task.taskType == task.TYPE_TASK)
-				presenter.onEditTask(task);
-				else {
-					try{
-					Intent resolveIntent = getContext().getPackageManager().getLaunchIntentForPackage(task.id);// 这里的packname就是从上面得到的目标apk的包名
-// 启动目标应用
-					context.startActivity(resolveIntent);
-					task.weight++;
-					FileUtils.createFile("apps",task.id + ".kta",new Gson().toJson(task));
-					} catch(Exception e){
-						Toast.makeText(getContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
-						
-						
-						try
-						{
-							FileUtils.deleteFile("apps", task.id + ".kta");
-						}
-						catch (Throwable e2)
-						{}
-
-						
-					} 
-				}
+				presenter.onItemClick(task,pos);
 			}
 
 
 		};
+		
+		adapter.mOnItemLongClickListener = new TaskListAdapter.OnItemLongClickListener(){
+
+			@Override
+			public boolean longClick(Task task, View view, boolean bool)
+			{
+				presenter.onItemLongClick(task,-1);
+				return false;
+			}
+		};
+		
 		 
 		mRecyclerView.setAdapter(adapter);
 	}
@@ -119,17 +96,29 @@ public class TaskListView implements TaskListContract.View
 			}
 		}
 		catch (IOException e)
-		{}
+		{
+			e.printStackTrace();
+			showToat(e.getMessage(),Toast.LENGTH_SHORT);
+		}
 	}
-	@Override
-	public Context getContext(){
-		return context;
-	}
-	
 
 	@Override
-	public View getView()
+	public List<Task> getTasks()
 	{
-		return root;
+		// TODO: Implement this method
+		return list;
 	}
+
+	@Override
+	public void scrollTo(int pos)
+	{
+		mRecyclerView.smoothScrollToPosition(pos);
+	}
+
+
+
+	
+	
+	
+	
 }

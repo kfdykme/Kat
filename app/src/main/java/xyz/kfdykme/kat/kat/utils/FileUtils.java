@@ -53,6 +53,22 @@ public class FileUtils
         return content;
     }
 	
+	public static File getFile(String reDir,String name) throws IOException, Throwable {
+        File root = Environment.getExternalStorageDirectory();
+
+        File dir = new File(root.getCanonicalPath()+baseDir+reDir);
+        if(!dir.exists()){
+            return null;
+        }
+        File targetFile = new File(dir.getCanonicalPath()+"/"+name);
+
+       
+        if(targetFile.isFile() && targetFile.exists())
+			return targetFile;
+		else return null;
+	}
+	
+	
 	public static List<String> readFiles(String reDir) throws IOException{
 		List<String> list = new ArrayList();
 		

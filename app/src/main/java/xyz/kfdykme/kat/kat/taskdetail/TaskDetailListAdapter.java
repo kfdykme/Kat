@@ -8,7 +8,7 @@ import android.inputmethodservice.*;
 import android.view.View.*;
 import android.graphics.*;
 
-public class TaskDetailAdapter extends RecyclerView.Adapter
+public class TaskDetailListAdapter extends RecyclerView.Adapter
 {
 	Context context;
 	
@@ -21,7 +21,7 @@ public class TaskDetailAdapter extends RecyclerView.Adapter
 	}
 	public OnAddListener mOnAddListener;
 	
-	public TaskDetailAdapter(Context context, List<TaskDetail> details)
+	public TaskDetailListAdapter(Context context, List<TaskDetail> details)
 	{
 		this.context = context;
 		this.details = details;

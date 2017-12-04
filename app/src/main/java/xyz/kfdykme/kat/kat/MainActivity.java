@@ -23,6 +23,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageInfo;
 import android.widget.Toast;
 import java.io.*;
+import android.widget.EditText;
 
 
 public class MainActivity extends AppCompatActivity
@@ -31,14 +32,16 @@ implements NavigationView.OnNavigationItemSelectedListener
 	
 	 
 	TaskListAdapter adapter;
-	
 	TaskListContract.Presenter mTaskListPresenter;	
 	TaskListContract.View mTaskListView;
 
 	int currentPos =0;
-	private ViewGroup view;
+	
+	EditText et ;
+	ViewGroup view;
 	
 	Handler mHander = new Handler();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,14 +49,35 @@ implements NavigationView.OnNavigationItemSelectedListener
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+		
+		
+		et = (EditText) findViewById(R.id.et);
+       	et.setOnKeyListener(new OnKeyListener(){
+
+				@Override
+				public boolean onKey(View p1, int p2, KeyEvent p3)
+				{
+					if(p3.getKeyCode() == KeyEvent.KEYCODE_ENTER){
+						mTaskListPresenter.search(et.getText().toString());
+						et.setText("");
+					
+					}
+					//Toast.makeText(getApplicationContext(),p2+"/"+p3,Toast.LENGTH_SHORT).show();
+					// TODO: Implement this method
+					return false;
+				}
+			});
+			
+		et.setVisibility(View.GONE);		
+		
+		FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
 				if(mTaskListPresenter!=null)
 					mTaskListPresenter.onAddTask(null);
-					}
+			}
         });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -66,13 +90,14 @@ implements NavigationView.OnNavigationItemSelectedListener
         navigationView.setNavigationItemSelectedListener(this);
 		
 		PermissionUtil.initPermission(this,new String[]{								 
-										  Manifest.permission.WRITE_EXTERNAL_STORAGE//,
-										  //Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS,
+										  Manifest.permission.WRITE_EXTERNAL_STORAGE,
+										  Manifest.permission.SYSTEM_ALERT_WINDOW										  //Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS,
 									  });
 
 									 
 		view = (ViewGroup) findViewById(R.id.content_main);
-		selectView(currentPos);
+		
+		onNavigationItemSelected(navigationView.getMenu().getItem(0));
     }
 
 	
@@ -103,9 +128,18 @@ implements NavigationView.OnNavigationItemSelectedListener
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_app) {
+			mTaskListPresenter.load(Task.TYPE_APP);
+			//mTaskListPresenter.search(et.getText().toString());
+			//Toast.makeText(this,et.getText().toString(),Toast.LENGTH_SHORT).show();
             return true;
-        }
+        } else if(id == R.id.action_desktop){
+			mTaskListPresenter.load(Task.TYPE_DESKTOP);
+			return true;
+		} else if (id == R.id.action_task){
+			mTaskListPresenter.load(Task.TYPE_TASK);
+			return true;
+		}
 
         return super.onOptionsItemSelected(item);
     }
@@ -148,69 +182,14 @@ implements NavigationView.OnNavigationItemSelectedListener
 				view.addView(mTaskListView.getView(),ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);	
 				break;
 			case 1:
-				view.addView(new CalendarView(this).getView(),ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);	
-				
-//				new Thread(){
-//					@Override
-//					public void run(){
-//						super.run();
-//						
-//						for(final PackageInfo p : getPackageManager().getInstalledPackages(0)){
-//							if(p.applicationInfo.loadIcon(getApplicationContext().getPackageManager())==null
-//							||p.applicationInfo.loadLabel(getPackageManager()) == null) continue;
-//							mHander.post(new Runnable(){
-//
-//									@Override
-//									public void run()
-//									{
-//										//Toast.makeText(getApplicationContext(),p.applicationInfo.loadLabel(getPackageManager())
-//										//,Toast.LENGTH_SHORT).show();
-//										
-//										String label = p.applicationInfo.loadLabel(getPackageManager()).toString();
-//										Task appT = new Task();
-//										appT.id = p.packageName;
-//										appT.bgc = Color.rgb(getrand(),getrand(),getrand());
-//										appT.tc = Color.rgb(getrand(),getrand(),getrand());
-//										appT.text = label;
-//										appT.taskType=Task.TYPE_APP;
-//										appT.className = p.applicationInfo.className;
-//										try
-//										{
-//											FileUtils.createFile("apps", appT.id + ".kta", new Gson().toJson(appT));
-//										}
-//										catch (IOException e)
-//										{}
-//									}
-//
-//								
-//							});
-//						}
-//					}
-//				}.start();
-				
+				view.addView(new CalendarView(this).getView(),ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);						
 				break;
 			case 2:
-				final View v = new View(this);
-				v.setBackgroundColor(Color.rgb(getrand(),getrand(),getrand()));
-				v.setOnClickListener(new OnClickListener(){
-
-						@Override
-						public void onClick(View p1)
-						{
-							v.setBackgroundColor(Color.rgb(getrand(),getrand(),getrand()));
-							
-						}
-					});
-				view.addView(v,ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);	
-				
 				
 				break;
 		}
 	}
 	
-	private int getrand(){
-		return MathUtil.rand(100,250);
-	}
 	
 
 	@Override
@@ -220,5 +199,7 @@ implements NavigationView.OnNavigationItemSelectedListener
 		selectView(currentPos);
 		super.onResume();
 	}
+	
+	
 	
 }

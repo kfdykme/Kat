@@ -17,7 +17,9 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHo
 	public Context context;
 	
 	public LayoutInflater inflayer;
-	public List<Task> tasks = new ArrayList();
+	public List<Task> tasks =null;
+	
+	
 	public interface OnItemClickListener
 	{
 		public void click(Task task,int pos);
@@ -44,7 +46,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHo
 	@Override
 	public TaskListAdapter.ViewHolder onCreateViewHolder(ViewGroup p1, int p2)
 	{
-		Log.i("TaskListAdapter","create " + p2);
+	
 		View v = inflayer.inflate(R.layout.rv_item,p1,false);
 		TaskListAdapter.ViewHolder vh =  new TaskListAdapter.ViewHolder(v);
 		
@@ -54,21 +56,25 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHo
 	@Override
 	public void onBindViewHolder( TaskListAdapter.ViewHolder p1,final int p2)
 	{
-		Log.i("KatAdapter","bind "+p2 +"/" +tasks.size());
-		Log.i("KatAdapter","Vh in " + p2+" is "+tasks.get(p2).toString());
-
+		
+		//init bgcolor, textcolor and gravity
 		p1.bgc = tasks.get(p2).bgc;
 		p1.tc = tasks.get(p2).tc;
-		if(tasks.get(p2).taskType == Task.TYPE_APP){
-			p1.bgc = context.getResources().getColor(R.color.colorPrimary);
-			p1.tc = context.getResources().getColor(R.color.colorAccent);
-		}
+		p1.tv.setGravity(Gravity.CENTER);
+		
+		//change colors if this is a app task
+		if(tasks.get(p2).checkType(Task.TYPE_APP)){
+			
+			p1.tc = context.getResources().getColor(R.color.colorAccentLight);
+			p1.bgc = Color.argb(0,0,0,0);
+			p1.tv.setGravity(Gravity.LEFT);// set TextView's gravity to Left, maybe I should reset it in Other tasks.
+		} 
+		
 		p1.tv.setText(tasks.get(p2).text);
-	
 		p1.cv.setBackgroundColor(p1.bgc);
 		p1.tv.setTextColor(p1.tc);
 		int tempWidth = 300 +(p2%3)*70;
-		if(tempWidth > p1.tv.getWidth());
+		if(tempWidth > p1.tv.getWidth())
 			p1.tv.setWidth(tempWidth);
 		p1.tv.setOnClickListener(new OnClickListener(){
 
@@ -97,7 +103,6 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHo
 	@Override
 	public int getItemCount()
 	{
-		// TODO: Implement this method
 		return tasks.size();
 	}
 	

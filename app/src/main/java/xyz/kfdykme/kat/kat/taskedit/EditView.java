@@ -11,18 +11,12 @@ import android.app.*;
 import android.view.View.*;
 
 
-public class EditView implements EditContract.View
+public class EditView extends BaseViewImpl<EditContract.Presenter> implements EditContract.View
 {
-	public EditContract.Presenter mPresenter;
+
+	
 
 	public Task task;
-	
-	
-	
-	Context context;
-
-	
-	
 	public View view;
 	public CardView cv;
 	public TextView tv;
@@ -32,6 +26,7 @@ public class EditView implements EditContract.View
 	public int bgc;
 	public int tc;
 	public EditText et;
+
 	
 	public AlertDialog dialog;
 	
@@ -56,7 +51,7 @@ public class EditView implements EditContract.View
 				{
 					dialog.dismiss();
 					
-					mPresenter.onDetail(task);
+					presenter.onDetail(task);
 				}
 			});
 
@@ -67,7 +62,7 @@ public class EditView implements EditContract.View
 				{
 					dialog.dismiss();
 					
-					mPresenter.onDelete(task);
+					presenter.onDelete(task);
 				}
 			});
 			
@@ -110,7 +105,7 @@ public class EditView implements EditContract.View
 				@Override
 				public void onClick(DialogInterface p1, int p2)
 				{
-					mPresenter.onCancel();
+					presenter.onCancel();
 				}
 			})
 			.setPositiveButton("Save", new DialogInterface.OnClickListener(){
@@ -118,7 +113,7 @@ public class EditView implements EditContract.View
 				@Override
 				public void onClick(DialogInterface p1, int p2)
 				{
-					mPresenter.onSave(task);
+					presenter.onSave(task);
 				}
 
 			})
@@ -128,7 +123,7 @@ public class EditView implements EditContract.View
 				public void onDismiss(DialogInterface p1)
 				{
 
-					mPresenter = null;
+					presenter = null;
 				}
 			})
 			.create();
@@ -144,6 +139,7 @@ public class EditView implements EditContract.View
 		this.task = task;
 		bgc = task.bgc;
 		tc = task.tc;
+		task.addType(Task.TYPE_TASK);
 		cv.setBackgroundColor(bgc);
 		tv.setTextColor(tc);
 		tv.setText(task.text);
@@ -184,26 +180,7 @@ public class EditView implements EditContract.View
 		initView(view);
 	}
 
-	
-	
 
-	@Override
-	public View getView()
-	{
-		return view;
-	}
 
-	@Override
-	public Context getContext()
-	{
-		return context;
-	}
-
-	@Override
-	public void setPresenter(EditContract.Presenter presenter)
-	{
-		mPresenter=  presenter;
-	}
-	
 	
 }

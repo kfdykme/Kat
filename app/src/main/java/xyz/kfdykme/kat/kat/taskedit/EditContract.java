@@ -4,7 +4,7 @@ import xyz.kfdykme.kat.kat.*;
 
 public interface EditContract
 {
-	interface View extends BaseView<EditContract.Presenter>{
+	interface View extends BaseView<Presenter>{
 		void onLoad(Task map);
 		void attach();
 		void show();

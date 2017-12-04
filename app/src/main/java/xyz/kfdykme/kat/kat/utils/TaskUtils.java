@@ -9,31 +9,58 @@ import android.util.*;
 
 public class TaskUtils
 {
-	public static List<Task> getTasks() throws IOException{
+	public static List<Task> getRecordTasks() throws IOException{
 		List<Task> ts= new ArrayList();
 		for(String content:FileUtils.readFiles("task")){
-			ts.add(new Gson().fromJson(content,Task.class));
+			Task t = new Gson().fromJson(content,Task.class);
+			ts.add(t);
 		}
-		for(String content:FileUtils.readFiles("apps")){
-			ts.add(new Gson().fromJson(content,Task.class));
-		}
-		return sortByWeight(ts);
+		
+		return ts;//sortByWeight(ts);
 	} 
+	
+	public static List<Task> getTaskApps() throws JsonSyntaxException, IOException {
+		List<Task> ts = new ArrayList();
+		
+		for(String content:FileUtils.readFiles("apps")){
+			Task t = new Gson().fromJson(content,Task.class);
+			ts.add(t);
+		}
+		
+		return ts;
+	}
+	
+	
+	public static List<Task> getTaskDesktop() throws JsonSyntaxException, IOException {
+		List<Task> ts = new ArrayList();
+
+		for(String content:FileUtils.readFiles("apps")){
+			Task t = new Gson().fromJson(content,Task.class);
+			if(t.checkType(Task.TYPE_DESKTOP))
+				ts.add(t);
+		}
+		
+		for(String content:FileUtils.readFiles("task")){
+			Task t = new Gson().fromJson(content,Task.class);
+			if(t.checkType(Task.TYPE_DESKTOP))
+				ts.add(t);
+		}
+		
+		return ts;
+	}
+	
+	
 	
 	public static List<Task> sortByWeight(List<Task> ts){
 		List<Task> nTs = new ArrayList<>();
 		while(ts.size() !=0){
 			int lep =0;
-			for(int i = 0 ;i< ts.size()-1;i++){
+			for(int i = 0 ;i< ts.size();i++){
 				if(ts.get(lep).weight > ts.get(i).weight){
 					lep = i;
 				}
 			}
-			if(ts.size() == 1)
-				nTs.add(nTs.size(),ts.get(lep));
-			else
-				nTs.add(0,ts.get(lep));
-		
+			nTs.add(0,ts.get(lep));	
 	
 			ts.remove(lep);
 		}

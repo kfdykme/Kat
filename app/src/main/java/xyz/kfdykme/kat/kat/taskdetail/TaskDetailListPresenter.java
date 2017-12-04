@@ -3,14 +3,14 @@ import xyz.kfdykme.kat.kat.*;
 import java.util.*;
 import android.util.*;
 
-public class TaskDetailPresenter implements TaskDetailContract.Presenter
+public class TaskDetailListPresenter implements TaskDetailListContract.Presenter
 {
 	
-	private TaskDetailContract.View view;
+	private TaskDetailListContract.View view;
 
 	public Task task;
 
-	public TaskDetailPresenter(TaskDetailContract.View view,Task task)
+	public TaskDetailListPresenter(TaskDetailListContract.View view,Task task)
 	{
 		this.task = task;
 		this.view = view;
