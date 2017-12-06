@@ -24,6 +24,10 @@ import android.content.pm.PackageInfo;
 import android.widget.Toast;
 import java.io.*;
 import android.widget.EditText;
+import android.util.*;
+import android.graphics.drawable.*;
+import com.bumptech.glide.*;
+import android.widget.ImageView;
 
 
 public class MainActivity extends AppCompatActivity
@@ -37,7 +41,6 @@ implements NavigationView.OnNavigationItemSelectedListener
 
 	int currentPos =0;
 	
-	EditText et ;
 	ViewGroup view;
 	
 	Handler mHander = new Handler();
@@ -45,47 +48,13 @@ implements NavigationView.OnNavigationItemSelectedListener
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
+		//隐藏状态栏
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		
+		setContentView(R.layout.activity_main);
+       
 		
-		et = (EditText) findViewById(R.id.et);
-       	et.setOnKeyListener(new OnKeyListener(){
-
-				@Override
-				public boolean onKey(View p1, int p2, KeyEvent p3)
-				{
-					if(p3.getKeyCode() == KeyEvent.KEYCODE_ENTER){
-						mTaskListPresenter.search(et.getText().toString());
-						et.setText("");
-					
-					}
-					//Toast.makeText(getApplicationContext(),p2+"/"+p3,Toast.LENGTH_SHORT).show();
-					// TODO: Implement this method
-					return false;
-				}
-			});
-			
-		et.setVisibility(View.GONE);		
-		
-		FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-				if(mTaskListPresenter!=null)
-					mTaskListPresenter.onAddTask(null);
-			}
-        });
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-
+        
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 		
@@ -97,7 +66,20 @@ implements NavigationView.OnNavigationItemSelectedListener
 									 
 		view = (ViewGroup) findViewById(R.id.content_main);
 		
+		try{
+			File bg = FileUtils.getFile("commen/bg","bg.jpg");
+			Drawable draw =Drawable.createFromPath(bg.getAbsolutePath());
+			
+			DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+			
+			drawer.setBackground(draw);
+			
+		} catch(Throwable e){
+			e.printStackTrace();
+			
+		}
 		onNavigationItemSelected(navigationView.getMenu().getItem(0));
+		
     }
 
 	
@@ -109,39 +91,14 @@ implements NavigationView.OnNavigationItemSelectedListener
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-           // super.onBackPressed();
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_app) {
-			mTaskListPresenter.load(Task.TYPE_APP);
-			//mTaskListPresenter.search(et.getText().toString());
-			//Toast.makeText(this,et.getText().toString(),Toast.LENGTH_SHORT).show();
-            return true;
-        } else if(id == R.id.action_desktop){
+			try{
 			mTaskListPresenter.load(Task.TYPE_DESKTOP);
-			return true;
-		} else if (id == R.id.action_task){
-			mTaskListPresenter.load(Task.TYPE_TASK);
-			return true;
-		}
-
-        return super.onOptionsItemSelected(item);
+			} catch(Exception e){
+				e.printStackTrace();
+				mTaskListView.showToat(e.getMessage(),Toast.LENGTH_SHORT);
+			}
+           
+        }
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -153,11 +110,14 @@ implements NavigationView.OnNavigationItemSelectedListener
         if (id == R.id.nav_camera) {
             selectView(0);
 		} else if (id == R.id.nav_gallery) {
+			
 			selectView(1);
         } else if (id == R.id.nav_slideshow) {
 			selectView(2);
+			
         } else if (id == R.id.nav_manage) {
-			selectView(3);
+			if(mTaskListPresenter!=null)
+				mTaskListPresenter.onAddTask(null);
         } else if (id == R.id.nav_share) {
 			TaskUtils.outputTaskDetails();
         }

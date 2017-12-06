@@ -96,7 +96,7 @@ public class EditView extends BaseViewImpl<EditContract.Presenter> implements Ed
 			});
 		bgc = Color.rgb(getrand(),getrand(),getrand());
 		tc = Color.rgb(getrand(),getrand(),getrand());
-		cv.setBackgroundColor(bgc);
+		tv.setBackgroundColor(bgc);
 		tv.setTextColor(tc);
 		dialog = new AlertDialog.Builder(context)
 			.setView(view)
@@ -140,7 +140,7 @@ public class EditView extends BaseViewImpl<EditContract.Presenter> implements Ed
 		bgc = task.bgc;
 		tc = task.tc;
 		task.addType(Task.TYPE_TASK);
-		cv.setBackgroundColor(bgc);
+		tv.setBackgroundColor(bgc);
 		tv.setTextColor(tc);
 		tv.setText(task.text);
 		et.setText(task.text);
@@ -168,7 +168,7 @@ public class EditView extends BaseViewImpl<EditContract.Presenter> implements Ed
 
 		bgc = Color.rgb(getrand(),getrand(),getrand());
 		tc = Color.rgb(getrand(),getrand(),getrand());
-		cv.setBackgroundColor(bgc);
+		tv.setBackgroundColor(bgc);
 		tv.setTextColor(tc);
 		task.bgc = bgc;
 		task.tc = tc;

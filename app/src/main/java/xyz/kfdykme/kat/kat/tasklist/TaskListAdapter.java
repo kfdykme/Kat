@@ -66,16 +66,16 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHo
 		if(tasks.get(p2).checkType(Task.TYPE_APP)){
 			
 			p1.tc = context.getResources().getColor(R.color.colorAccentLight);
-			p1.bgc = Color.argb(0,0,0,0);
-			p1.tv.setGravity(Gravity.LEFT);// set TextView's gravity to Left, maybe I should reset it in Other tasks.
+			p1.bgc = Color.argb(69,33,33,33);
+		//	p1.tv.setGravity(Gravity.LEFT);// set TextView's gravity to Left, maybe I should reset it in Other tasks.
 		} 
 		
 		p1.tv.setText(tasks.get(p2).text);
 		p1.cv.setBackgroundColor(p1.bgc);
 		p1.tv.setTextColor(p1.tc);
 		int tempWidth = 300 +(p2%3)*70;
-		if(tempWidth > p1.tv.getWidth())
-			p1.tv.setWidth(tempWidth);
+		//if(tempWidth > p1.tv.getWidth())
+		//	p1.tv.setWidth(tempWidth);
 		p1.tv.setOnClickListener(new OnClickListener(){
 
 				@Override

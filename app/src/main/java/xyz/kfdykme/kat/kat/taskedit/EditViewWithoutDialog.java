@@ -52,7 +52,7 @@ public class EditViewWithoutDialog extends EditView implements EditContract.View
 		this.task = task;
 		bgc = task.bgc;
 		tc = task.tc;
-		cv.setBackgroundColor(bgc);
+		tv.setBackgroundColor(bgc);
 		tv.setTextColor(tc);
 		tv.setText(task.text);
 		et.setText(task.text);

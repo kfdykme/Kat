@@ -12,11 +12,11 @@
         <item
             android:id="@+id/nav_slideshow"
             android:title="NothingNow" />
-        <item
-            android:id="@+id/nav_manage"
-            android:title="NothingNow"/>
+       
     </group>
-
+	<item
+		android:id="@+id/nav_manage"
+		android:title="Add"/>
     <item android:title="TaskDetaiC">
         <menu>
             <item

@@ -14,6 +14,8 @@ public class Task
 	
 	public String className ="";
 	
+	public String action ="";
+	
 	public int weight = 0;
 	
 	public static final int ACTIVE = 1;
@@ -29,6 +31,13 @@ public class Task
 	
 	public static final String TYPE_DESKTOP = "desktop";
 	
+	public static final String TYPE_ACTION = "action";
+	
+	public static final String ACTION_TASK = "a_to_task";	
+	
+	public static final String ACTION_APP = "a_to_app";	
+	
+	public static final String ACTION_ADD_RECORD = "a_to_add_record";	
 	
 	
 	public Task(){}

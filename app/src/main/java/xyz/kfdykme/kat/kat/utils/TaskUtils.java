@@ -6,6 +6,7 @@ import java.util.*;
 import xyz.kfdykme.kat.kat.*;
 import xyz.kfdykme.kat.kat.taskdetail.*;
 import android.util.*;
+import java.text.*;
 
 public class TaskUtils
 {
@@ -16,7 +17,7 @@ public class TaskUtils
 			ts.add(t);
 		}
 		
-		return ts;//sortByWeight(ts);
+		return sortByChina(ts);//sortByWeight(ts);
 	} 
 	
 	public static List<Task> getTaskApps() throws JsonSyntaxException, IOException {
@@ -27,7 +28,22 @@ public class TaskUtils
 			ts.add(t);
 		}
 		
-		return ts;
+		
+		
+		return sortByChina(ts);
+	}
+	
+	public static List<Task> getTaskAction() throws JsonSyntaxException, IOException {
+		List<Task> ts = new ArrayList();
+
+		for(String content:FileUtils.readFiles("action")){
+			Task t = new Gson().fromJson(content,Task.class);
+			ts.add(t);
+		}
+
+
+
+		return sortByChina(ts);
 	}
 	
 	
@@ -46,9 +62,33 @@ public class TaskUtils
 				ts.add(t);
 		}
 		
-		return ts;
+		for(String content:FileUtils.readFiles("action")){
+			Task t = new Gson().fromJson(content,Task.class);
+			if(t.checkType(Task.TYPE_DESKTOP))
+				ts.add(t);
+		}
+		
+		
+		return sortByChina(ts);
 	}
 	
+	public static List<Task> sortByChina(List<Task> ts){
+		List<Task> nTs = new ArrayList<>();
+		
+		Comparator cmp = Collator.getInstance(java.util.Locale.CHINA);
+		while(ts.size() !=0){
+			int lep =0;
+			for(int i = 0 ;i< ts.size();i++){
+				if(cmp.compare(ts.get(lep).text,ts.get(i).text)<0){
+					lep = i;
+				}
+			}
+			nTs.add(0,ts.get(lep));	
+
+			ts.remove(lep);
+		}
+		return nTs;
+	}
 	
 	
 	public static List<Task> sortByWeight(List<Task> ts){
