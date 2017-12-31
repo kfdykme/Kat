@@ -10,13 +10,13 @@ import android.support.v7.app.*;
 import android.support.v7.widget.*;
 import android.view.*;
 import com.google.gson.*;
-import xyz.kfdykme.kat.kat.*;
+
 import xyz.kfdykme.kat.kat.calendar.CalendarView;
 import xyz.kfdykme.kat.kat.taskdetail.*;
 import xyz.kfdykme.kat.kat.tasklist.*;
 import xyz.kfdykme.kat.kat.utils.*;
 
-import xyz.kfdykme.kat.kat.R;
+
 import android.graphics.*;
 import android.view.View.*;
 import android.content.pm.PackageManager;
@@ -53,8 +53,7 @@ implements NavigationView.OnNavigationItemSelectedListener
 		
 		setContentView(R.layout.activity_main);
        
-		
-        
+		        
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 		
@@ -139,6 +138,7 @@ implements NavigationView.OnNavigationItemSelectedListener
 				mTaskListView = new TaskListView(this);
 				mTaskListPresenter = new TaskListPresenter(mTaskListView);
 				mTaskListPresenter.start();
+				mTaskListPresenter.onReflash(null);
 				view.addView(mTaskListView.getView(),ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);	
 				break;
 			case 1:

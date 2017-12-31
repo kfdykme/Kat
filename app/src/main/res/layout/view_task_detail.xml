@@ -20,6 +20,7 @@
 				layout="@layout/view_task_edit"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"/>
+
 			<LinearLayout
 				android:layout_height="wrap_content"
 				android:layout_width="match_parent"
@@ -41,23 +42,40 @@
 					android:id="@+id/bt_save"/>
 
 			</LinearLayout>
-		</LinearLayout>
 
-		
+		</LinearLayout>
 
 	</android.support.v7.widget.CardView>
 
-	<android.support.v7.widget.CardView
+	<RelativeLayout
 		android:layout_height="wrap_content"
-		android:layout_width="wrap_content"
-		android:layout_margin="8dp">
+		android:layout_width="match_parent">
 
 		<android.support.v7.widget.RecyclerView
 			android:id="@+id/rv"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"/>
 
-	</android.support.v7.widget.CardView>
+		<android.support.v7.widget.CardView
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:padding="4dp"
+			android:layout_alignParentRight="true"
+			android:layout_alignParentEnd="true"
+			android:layout_alignParentTop="true">
+
+			<TextView
+				android:id="@+id/v_addnote"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textAppearance="?android:attr/textAppearanceMedium"
+				android:text="Add note"
+				
+				android:background="#67ABBD"/>
+
+		</android.support.v7.widget.CardView>
+
+	</RelativeLayout>
 
 </LinearLayout>
 

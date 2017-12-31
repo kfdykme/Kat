@@ -3,9 +3,12 @@ import android.os.*;
 import android.util.*;
 import java.io.*;
 import java.util.*;
+import android.app.*;
 
 public class FileUtils
 {
+	
+
 	public static final String baseDir ="/Kat/";
 
 	private static Throwable FileNotFoundException;
@@ -22,6 +25,9 @@ public class FileUtils
 		raf.write(content.getBytes());
 		raf.close();
 		Log.i("FileUtils","create or edit file : "+name+"/"+content);
+		
+		
+		
 	}
 	
 	public static String readFile( String reDir,String name,String fileType) throws IOException, Throwable {

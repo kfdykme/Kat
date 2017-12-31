@@ -13,6 +13,7 @@ import android.os.*;
 import xyz.kfdykme.kat.kat.taskdetail.*;
 import android.widget.*;
 import android.support.v7.widget.RecyclerView.*;
+import android.animation.*;
 
 public class TaskListView extends BaseViewImpl<TaskListContract.Presenter> implements TaskListContract.View
 {
@@ -35,10 +36,51 @@ public class TaskListView extends BaseViewImpl<TaskListContract.Presenter> imple
 	}
 
 	@Override
-	public void setLayout(RecyclerView.LayoutManager lm)
+	public void setLayout(final RecyclerView.LayoutManager lm)
 	{
-		mRecyclerView.setLayoutManager(lm);// TODO: Implement this method
-	}
+		ObjectAnimator alpha = ObjectAnimator.ofFloat(view,"alpha",1f,0f);
+		alpha.addListener(new Animator.AnimatorListener(){
+
+				@Override
+				public void onAnimationStart(Animator p1)
+				{
+					// TODO: Implement this method
+				}
+
+				@Override
+				public void onAnimationCancel(Animator p1)
+				{
+					// TODO: Implement this method
+				}
+
+				@Override
+				public void onAnimationRepeat(Animator p1)
+				{
+					// TODO: Implement this method
+				}
+
+			
+
+				
+				@Override
+				public void onAnimationEnd(Animator p1)
+				{
+					
+					
+					
+					ObjectAnimator.ofFloat(view,"alpha",0f,1f)
+					.setDuration(1000)
+					.start();
+					
+					mRecyclerView.setLayoutManager(lm);
+				}
+
+				
+			});
+		
+			alpha.setDuration(100);
+			alpha.start();
+		}
 
 	
 	
@@ -80,7 +122,7 @@ public class TaskListView extends BaseViewImpl<TaskListContract.Presenter> imple
 	@Override
 	public void onReflash()
 	{
-		try
+		/*try
 		{
 			for(String s:FileUtils.readFiles("task")){
 				boolean add = true;
@@ -99,7 +141,7 @@ public class TaskListView extends BaseViewImpl<TaskListContract.Presenter> imple
 		{
 			e.printStackTrace();
 			showToat(e.getMessage(),Toast.LENGTH_SHORT);
-		}
+		}*/
 	}
 
 	@Override

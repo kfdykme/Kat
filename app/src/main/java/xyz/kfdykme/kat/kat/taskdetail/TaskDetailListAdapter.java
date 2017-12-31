@@ -7,12 +7,14 @@ import xyz.kfdykme.kat.kat.*;
 import android.inputmethodservice.*;
 import android.view.View.*;
 import android.graphics.*;
+import java.text.*;
+import xyz.kfdykme.kat.kat.utils.*;
 
 public class TaskDetailListAdapter extends RecyclerView.Adapter
 {
 	Context context;
 	
-	List<TaskDetail> details;
+	List<TaskDetail> details =new ArrayList();
 	
 	List<Boolean> showTitles= new ArrayList();
 
@@ -24,8 +26,24 @@ public class TaskDetailListAdapter extends RecyclerView.Adapter
 	public TaskDetailListAdapter(Context context, List<TaskDetail> details)
 	{
 		this.context = context;
-		this.details = details;
-		for(int i = 0;i < details.size();i++)showTitles.add(true);
+		Comparator cmp = Collator.getInstance(java.util.Locale.CHINA);
+		while(details.size() !=0){
+			int lep =0;
+			for(int i = 0 ;i< details.size();i++){
+				if(cmp.compare(details.get(lep).getTitle(),details.get(i).getTitle())<0){
+					lep = i;
+				}
+			}
+			this.details.add(0,details.get(lep));	
+
+			details.remove(lep);
+		}
+		
+		//this.details = details;
+		
+		
+		
+		for(int i = 0;i < this.details.size();i++)showTitles.add(true);
 	}
 
 
@@ -45,7 +63,7 @@ public class TaskDetailListAdapter extends RecyclerView.Adapter
 			case TaskDetail.NORMAL:
 				return new NormalViewHolder(
 					LayoutInflater.from(context)
-					.inflate(R.layout.item_task_detail_normai,null)
+					.inflate(R.layout.item_task_detail_normai,p1,false)
 					);
 				
 		}
@@ -56,30 +74,16 @@ public class TaskDetailListAdapter extends RecyclerView.Adapter
 	public void onBindViewHolder(RecyclerView.ViewHolder p1,final int p2)
 	{
 		
-		if(p2 == details.size()){
-			((MediumViewHolder)p1).tv.setText("ADD");
-			((MediumViewHolder)p1).tv.setOnClickListener(new OnClickListener(){
-
-					@Override
-					public void onClick(View p1)
-					{
-						mOnAddListener.onClick(p1);
-					}
-				});
-			
-			return ;
-		}
 		
 		
 		int type =details.get(p2).itemType;
 		String item = details.get(p2).item;
 		final String title = details.get(p2).title;
-		
+		final String time = TimeUtils.fromat(details.get(p2).createTime);
 		final String subTitle ;
-		if(title.length()>8)
-			subTitle= title.substring(8);
-		else
-			subTitle=title;
+		
+			
+		subTitle=title;
 		final NormalViewHolder vh = (NormalViewHolder)p1;
 		vh.tvTitle.setText(subTitle);
 		vh.tvTitle.setOnClickListener(new OnClickListener(){
@@ -95,6 +99,7 @@ public class TaskDetailListAdapter extends RecyclerView.Adapter
 				}
 			});
 		vh.tvContent.setText(item);
+		vh.tvTime.setText(time);
 //		vh.tvContent.setOnClickListener(new OnClickListener(){
 //
 //				@Override
@@ -144,7 +149,7 @@ public class TaskDetailListAdapter extends RecyclerView.Adapter
 	@Override
 	public int getItemCount()
 	{
-		return details.size()+1;
+		return details.size();
 	}
 
 	@Override

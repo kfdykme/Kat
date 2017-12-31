@@ -13,6 +13,7 @@ import com.google.common.base.*;
 import android.widget.*;
 import android.support.v7.app.*;
 import android.support.v7.widget.*;
+import java.util.*;
 
 public class TaskListPresenter implements TaskListContract.Presenter
 {
@@ -176,6 +177,7 @@ public class TaskListPresenter implements TaskListContract.Presenter
 	@Override
 	public void load(String s) 
 	{
+		
 		try
 		{
 		switch(s){
@@ -219,33 +221,48 @@ public class TaskListPresenter implements TaskListContract.Presenter
 	@Override
 	public void onReflash(Task t)
 	{
-		for(final PackageInfo p : view.getContext().getPackageManager().getInstalledPackages(0)){
-			if(view.getContext().getPackageManager().getLaunchIntentForPackage(p.applicationInfo.packageName) ==null) continue;
-			String label = p.applicationInfo.loadLabel(view.getContext().getPackageManager()).toString();
-			Task appT = new Task();
-			appT.id = p.packageName;
-			appT.bgc = Color.rgb(getrand(),getrand(),getrand());
-			appT.tc = Color.rgb(getrand(),getrand(),getrand());
-			appT.text = label;
-			appT.addType(Task.TYPE_APP);
-			appT.className = p.applicationInfo.className;
-			
-			
-			try
-			{
-				if(FileUtils.getFile("apps",appT.id+".kta") ==null)
-					FileUtils.createFile("apps", appT.id + ".kta", new Gson().toJson(appT));	
-			}
-			catch (IOException e)
-			{
-				e.printStackTrace();
-			}catch (Throwable Throwables){
-				Throwables.printStackTrace();
-			}
-			//					view.dissmissProgressDialog();
-			//					view.onReflash();	
-			
-		}
+		new Thread(new Runnable(){
+
+				@Override
+				public void run()
+				{
+					Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);  
+					mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);  
+					//符合上面条件的全部查出来,并且排序  
+					List<ResolveInfo> mAllApps = view.getContext().getPackageManager().queryIntentActivities(mainIntent, 0);  
+
+
+
+					for(final ResolveInfo p : mAllApps){//view.getContext().getPackageManager().getInstalledPackages(0)){
+						if(view.getContext().getPackageManager().getLaunchIntentForPackage(p.activityInfo.packageName) ==null) continue;
+						String label = p.activityInfo.loadLabel(view.getContext().getPackageManager()).toString();
+						Task appT = new Task();
+						appT.id = p.activityInfo.packageName;
+						appT.bgc = Color.rgb(getrand(),getrand(),getrand());
+						appT.tc = Color.rgb(getrand(),getrand(),getrand());
+						appT.text = label;
+						appT.addType(Task.TYPE_APP);
+						appT.className = p.activityInfo.name;
+
+
+						try
+						{
+							if(FileUtils.getFile("apps",appT.id+".kta") ==null)
+								FileUtils.createFile("apps", appT.id + ".kta", new Gson().toJson(appT));	
+						}
+						catch (IOException e)
+						{
+							e.printStackTrace();
+						}catch (Throwable Throwables){
+							Throwables.printStackTrace();
+						}
+						//					view.dissmissProgressDialog();
+						//					view.onReflash();	
+
+					}
+					
+				}
+			}).start();
 		
 		view.onReflash();			
 		

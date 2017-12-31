@@ -139,7 +139,7 @@ public class EditView extends BaseViewImpl<EditContract.Presenter> implements Ed
 		this.task = task;
 		bgc = task.bgc;
 		tc = task.tc;
-		task.addType(Task.TYPE_TASK);
+		
 		tv.setBackgroundColor(bgc);
 		tv.setTextColor(tc);
 		tv.setText(task.text);
@@ -158,6 +158,7 @@ public class EditView extends BaseViewImpl<EditContract.Presenter> implements Ed
 			task = new Task();
 			final String id= System.currentTimeMillis()+""; 
 			task.id = id;
+			task.addType(Task.TYPE_TASK);
 		}
 		task.text  = et.getText().toString();
 		task.bgc = bgc;

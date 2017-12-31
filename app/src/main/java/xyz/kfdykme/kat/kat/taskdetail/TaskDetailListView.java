@@ -8,6 +8,8 @@ import java.util.*;
 import xyz.kfdykme.kat.kat.*;
 import xyz.kfdykme.kat.kat.taskedit.*;
 import xyz.kfdykme.kat.kat.utils.*;
+import android.view.View.*;
+import android.widget.AdapterView.*;
 
 public class TaskDetailListView extends BaseViewImpl<TaskDetailListContract.Presenter> implements TaskDetailListContract.View
 {
@@ -15,7 +17,10 @@ public class TaskDetailListView extends BaseViewImpl<TaskDetailListContract.Pres
 
 	public EditViewWithoutDialog mEditView;
 	public EditPresenter mEditPresenter;
-
+	View av = null;
+	EditText etTitle = null;// = (EditText) av.findViewById(R.id.et_title);
+	AlertDialog d ;
+	
 	RecyclerView rv;
 
 	Task mTask;
@@ -30,42 +35,72 @@ public class TaskDetailListView extends BaseViewImpl<TaskDetailListContract.Pres
 	@Override
 	public void onAddTaskDetail(final Task task)
 	{
-		final String taskId = mTask.id;
-		final View av = LayoutInflater.from(getContext()).inflate(R.layout.view_add_task_edit,null);
-		final EditText etTitle = (EditText) av.findViewById(R.id.et_title);
-		etTitle.setText(TimeUtils.fromat(System.currentTimeMillis()+""));
-		AlertDialog d = new AlertDialog.Builder(getContext())
+		if(d ==null){
+		d= new AlertDialog.Builder(getContext())
 			.setView(av)
+			
 			.setPositiveButton("Save", new DialogInterface.OnClickListener(){
 
 				@Override
 				public void onClick(DialogInterface p1, int p2)
 				{
-
+					
 					EditText etContent = (EditText) av.findViewById(R.id.et_content);
+					
 					String title = etTitle.getText().toString();
 					String content = etContent.getText().toString();
-					if(!title.isEmpty() && !content.isEmpty()){
-						TaskDetail td = new TaskDetail();
-						td.createTime = System.currentTimeMillis()+"";
-						td.taskId = taskId;
-						td.title = title;
-						td.item = content;
-						td.itemType = 2;
-						td.save();
-						Toast.makeText(getContext(),"Save as " + title,Toast.LENGTH_LONG).show();
-						presenter.onSave();
-						mEditPresenter.onSave(mTask);
-						//presenter.load(mTask);				
-					}
+					etContent.setText("");
+					presenter.save(title,content);
+					
 				}
 			})
+			
 			.create();
+		d.setCanceledOnTouchOutside(false);
+		}
 		d.show();
 	}
 	@Override
-	public void onLoad(List<TaskDetail> ts)
+	public void onLoad(List<TaskDetail> ts,List<String> titles)
 	{
+		
+		
+		av = LayoutInflater.from(getContext()).inflate(R.layout.view_add_task_edit,null);
+		final String ct = "current time";
+	    etTitle = (EditText) av.findViewById(R.id.et_title);
+
+		
+		ArrayAdapter<String> sadapter=new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item,titles);
+
+		sadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); 
+
+
+
+		Spinner spinner = (Spinner) av.findViewById(R.id.spinner);
+		spinner.setAdapter(sadapter);
+
+
+		spinner.setOnItemSelectedListener(new OnItemSelectedListener(){
+
+				@Override
+				public void onItemSelected(AdapterView<?> p1, View p2, int p3, long p4)
+				{
+
+					
+					String title = (String) p1.getAdapter().getItem((p3));
+					
+					presenter.onSelectSpinner(title);
+					
+				}
+
+				@Override
+				public void onNothingSelected(AdapterView<?> p1)
+				{
+					
+				}
+			});
+		
+		
 		rv= (RecyclerView) view.findViewById(R.id.rv);
 		rv.setItemAnimator(new DefaultItemAnimator());
 		LinearLayoutManager lm = new LinearLayoutManager(getContext());
@@ -74,14 +109,16 @@ public class TaskDetailListView extends BaseViewImpl<TaskDetailListContract.Pres
 		rv.setLayoutManager(lm);
 		TaskDetailListAdapter adapter = new TaskDetailListAdapter(getContext(),ts);
 		rv.setAdapter(adapter);
-		adapter.mOnAddListener = new TaskDetailListAdapter.OnAddListener(){
+		View vAddnote = view.findViewById(R.id.v_addnote);
+		vAddnote.setOnClickListener(new OnClickListener(){
 
-			@Override
-			public void onClick(View view)
-			{
-				presenter.addTaskDetail(mTask);
-			}
-		};
+				@Override
+				public void onClick(View p1)
+				{
+					presenter.addTaskDetail(mTask);
+				}
+			});
+		
 		mEditView = new EditViewWithoutDialog(getContext(),getView());
 		mEditPresenter = new EditPresenter(mEditView);
 		mEditView.setPresenter(mEditPresenter);
@@ -95,6 +132,25 @@ public class TaskDetailListView extends BaseViewImpl<TaskDetailListContract.Pres
 		
 	}
 
+	@Override
+	public void onSelectSpinner(String s)
+	{
+		etTitle.setText(s);
+	}
+
+	@Override
+	public EditPresenter getEditPresenter()
+	{
+		// TODO: Implement this method
+		return mEditPresenter;
+	}
+
+
+	
+	
+
+	
+	
 	
 	
 }

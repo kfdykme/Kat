@@ -9,10 +9,13 @@ public class NormalViewHolder extends RecyclerView.ViewHolder
 {
 	TextView tvTitle;
 	TextView tvContent;
+	TextView tvTime;
 	
 	public NormalViewHolder(View view){
 		super(view);
 		tvTitle = (TextView) view.findViewById(R.id.tv_title);
 		tvContent = (TextView) view.findViewById(R.id.tv_content);
+		tvTime = (TextView) view.findViewById(R.id.tv_time);
+		
 	}
 }
