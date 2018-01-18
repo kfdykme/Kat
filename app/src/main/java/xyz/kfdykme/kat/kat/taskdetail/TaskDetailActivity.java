@@ -7,7 +7,7 @@ import android.widget.*;
 import java.util.*;
 import android.content.*;
 import android.view.*;
-import android.support.v7.widget.*;
+import android.support.v7.widget.Toolbar;
 import xyz.kfdykme.kat.kat.taskedit.*;
 import xyz.kfdykme.kat.kat.utils.TimeUtils;
 
@@ -29,6 +29,7 @@ public class TaskDetailActivity extends AppCompatActivity
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
+		//setSupportActionBar((Toolbar)findViewById(R.id.toolBar));
 		super.onCreate(savedInstanceState);
 		
 		Bundle b = this.getIntent().getExtras();

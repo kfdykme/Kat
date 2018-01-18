@@ -45,7 +45,9 @@
                 <category android:name="android.intent.category.MONKEY" />
             </intent-filter>
         </activity>
-        <activity android:name="xyz.kfdykme.kat.kat.taskdetail.TaskDetailActivity" >
+        <activity
+            android:name="xyz.kfdykme.kat.kat.taskdetail.TaskDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
         </activity>
     </application>
 

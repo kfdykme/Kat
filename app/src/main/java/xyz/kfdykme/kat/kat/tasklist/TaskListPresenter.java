@@ -50,7 +50,8 @@ public class TaskListPresenter implements TaskListContract.Presenter
 		mEditPresenter.setTasklistPresenter(this);
 		mEditPresenter.start();
 		mEditPresenter.onLoad(t);
-		mEditPresenter.showDialog();
+		mEditPresenter.onDetail(t);
+		//mEditPresenter.showDialog();
 		
 	}
 
